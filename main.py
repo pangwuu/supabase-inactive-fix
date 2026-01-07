@@ -3,6 +3,7 @@
 import json
 import os
 import logging
+from dotenv import load_dotenv
 from helpers.utils import generate_secure_random_string
 from services.supabase_service import SupabaseClient
 
@@ -18,6 +19,7 @@ logging.basicConfig(
 )
 
 def main():
+    load_dotenv()
     # Load configurations from config.json
     try:
         with open('config.json', 'r') as config_file:
@@ -42,6 +44,12 @@ def main():
         key = config.get('supabase_key')
         table_name = config.get('table_name', 'KeepAlive')
 
+        # If supabase_url is an environment variable (doesn't start with http)
+        if url and not url.startswith('http'):
+            env_url = os.getenv(url)
+            if env_url:
+                url = env_url
+
         # If using environment variables for keys
         key_env_var = config.get('supabase_key_env')
         if key_env_var:
@@ -55,6 +63,7 @@ def main():
             continue
 
         logging.info(f"Processing database: {name}")
+
 
         # Initialize Supabase client for this configuration
         supabase_client = SupabaseClient(url, key, table_name)
