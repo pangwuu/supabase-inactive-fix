@@ -1,0 +1,8 @@
+[
+  {
+    "name": "MemTracker",
+    "supabase_url": "SUPABASE_PROJ_URL",
+    "supabase_key_env": "SUPABASE_API_KEY",
+    "table_name": "keep-alive"
+  }
+]
